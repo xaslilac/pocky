@@ -2,8 +2,8 @@
 name = "pocky"
 version = "0.1.0"
 authors = ["McKayla Washburn <mckayla@hey.com>"]
-description = ""
-keywords = []
+description = "A framework for building your own static site generator"
+keywords = ["web", "markdown", "static", "site"]
 license = "MIT"
 homepage = "https://github.com/aslilac/pocky"
 repository = "https://github.com/aslilac/pocky"
