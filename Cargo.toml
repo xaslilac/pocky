@@ -1,13 +1,13 @@
 [package]
 name = "pocky"
-version = "0.0.0"
+version = "0.1.0"
 authors = ["McKayla Washburn <mckayla@hey.com>"]
 description = ""
 keywords = []
 license = "MIT"
-homepage = "https://github.com/xaslilac/pocky"
-repository = "https://github.com/xaslilac/pocky"
-documentation = "https://docs.rs/crate/pocky"
+homepage = "https://github.com/aslilac/pocky"
+repository = "https://github.com/aslilac/pocky"
+documentation = "https://docs.rs/pocky"
 edition = "2021"
 
 [dependencies]
