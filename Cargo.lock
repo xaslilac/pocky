@@ -152,7 +152,7 @@ checksum = "d15b6607fa632996eb8a17c9041cb6071cb75ac057abd45dece578723ea8c7c0"
 
 [[package]]
 name = "pocky"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "markdown",
