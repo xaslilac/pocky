@@ -11,10 +11,22 @@ status: test
 This is an example blog post, with a bunch of source code in different languages
 and usage of a bunch of Markdown features.
 
+<!-- here's a comment! hopefully you can't see it! -->
+
 <details>
 <summary>August is nice</summary>
 <p>Soft puppy</p>
 </details>
+
+~~I regret this text~~
+
+| Name   | Good | Soft |
+| ------ | ---- | ---- |
+| August | Yes  | Yes  |
+| Dot    | Yes  | Yes  |
+| Mady   | Yes  | Yes  |
+| Spot   | Yes  | Yes  |
+| Toby   | Yes  | Yes  |
 
 > Quote
 
@@ -23,6 +35,9 @@ and usage of a bunch of Markdown features.
 
 1. Numbered list
 1. Numbered list
+
+- [x] Thing I have done
+- [ ] Thing I need to do
 
 ```rust
 fn main() {
