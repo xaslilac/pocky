@@ -9,33 +9,30 @@ pub struct MarkdownPage {
 
 impl MarkdownPage {
 	pub fn parse(content: String) -> Self {
-		let is_frontmatter_delimiter =
-			|line: &&str| line.len() >= 3 && line.find(|c| c != '-').is_none();
-
-		// Parse frontmatter metadata
-		let mut metadata = HashMap::<String, String>::default();
+		// Skip blank lines from the beginning
 		let mut lines = content
 			.lines()
 			.skip_while(|line| line.trim().is_empty())
 			.peekable();
 
-		if lines.next_if(is_frontmatter_delimiter).is_some() {
-			let metadata_lines = lines
+		let is_frontmatter_delimiter =
+			|line: &&str| line.len() >= 3 && line.find(|c| c != '-').is_none();
+
+		// Parse the frontmatter section, if the document starts with one
+		let metadata = if lines.next_if(is_frontmatter_delimiter).is_none() {
+			HashMap::<String, String>::default()
+		} else {
+			let metadata_source = lines
 				.by_ref()
 				.take_while(|line| !is_frontmatter_delimiter(line))
-				.filter(|line| !line.trim().is_empty());
+				.map(|line| format!("{}\n", line))
+				.collect::<String>();
 
-			for line in metadata_lines {
-				let (key, value) = line
-					.split_once(':')
-					.expect("frontmatter section should only contain key value pairs");
+			serde_yaml::from_str(&metadata_source).unwrap()
+		};
 
-				metadata.insert(
-					key.trim().to_ascii_lowercase().to_string(),
-					value.trim().to_string(),
-				);
-			}
-		}
+		// The remaining lines are the actual document content
+		let md_source = lines.map(|line| format!("{}\n", line)).collect::<String>();
 
 		let options = {
 			use pulldown_cmark::Options;
@@ -48,9 +45,10 @@ impl MarkdownPage {
 			options
 		};
 
-		let md = lines.map(|line| format!("{}\n", line)).collect::<String>();
-		let parser = pulldown_cmark::Parser::new_ext(&md, options);
-		let mut content = String::new();
+		// Allocate *roughly* enough room. It'll probably resize at least once, but this
+		// should prevent it from needing to resize multiple times.
+		let mut content = String::with_capacity(md_source.len());
+		let parser = pulldown_cmark::Parser::new_ext(&md_source, options);
 		pulldown_cmark::html::push_html(&mut content, parser);
 
 		MarkdownPage { metadata, content }
