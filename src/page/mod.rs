@@ -1,3 +1,4 @@
+pub mod html;
 pub mod md;
 
 use std::fs;
@@ -18,6 +19,10 @@ impl<E> PageCollection<E>
 where
 	E: AsHtml,
 {
+	pub fn into_vec(self) -> Vec<E> {
+		self.pages
+	}
+
 	pub fn iter(&self) -> impl Iterator<Item = &E> {
 		self.pages.iter()
 	}

@@ -1,8 +1,11 @@
+use serde::de::DeserializeOwned;
 use std::fs;
 use std::path::Path;
 
-use serde::de::DeserializeOwned;
+use crate::md::markdown_to_html;
+use crate::AsHtml;
 
+#[derive(Clone, Debug)]
 pub struct MarkdownPage<M: DeserializeOwned> {
 	pub metadata: Option<M>,
 	pub content: String,
@@ -33,23 +36,7 @@ impl<M: DeserializeOwned> MarkdownPage<M> {
 
 		// The remaining lines are the actual document content
 		let md_source = lines.map(|line| format!("{}\n", line)).collect::<String>();
-
-		let options = {
-			use pulldown_cmark::Options;
-
-			let mut options = Options::empty();
-			options.insert(Options::ENABLE_STRIKETHROUGH);
-			options.insert(Options::ENABLE_TABLES);
-			options.insert(Options::ENABLE_TASKLISTS);
-
-			options
-		};
-
-		// Allocate *roughly* enough room. It'll probably resize at least once, but this
-		// should prevent it from needing to resize multiple times.
-		let mut content = String::with_capacity(md_source.len());
-		let parser = pulldown_cmark::Parser::new_ext(&md_source, options);
-		pulldown_cmark::html::push_html(&mut content, parser);
+		let content = markdown_to_html(md_source);
 
 		MarkdownPage { metadata, content }
 	}
@@ -63,6 +50,15 @@ where
 	fn from(path: P) -> Self {
 		let content = fs::read_to_string(path).expect("unable to read file");
 		MarkdownPage::parse(content)
+	}
+}
+
+impl<M> AsHtml for MarkdownPage<M>
+where
+	M: DeserializeOwned,
+{
+	fn as_html(&self) -> String {
+		self.content.clone()
 	}
 }
 
