@@ -11,5 +11,4 @@ documentation = "https://docs.rs/pocky"
 edition = "2021"
 
 [dependencies]
-chrono = "0.4.22"
 pulldown-cmark = "0.9.2"
