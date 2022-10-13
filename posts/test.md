@@ -11,14 +11,10 @@ status: test
 This is an example blog post, with a bunch of source code in different languages
 and usage of a bunch of Markdown features.
 
-lmao, this parser doesn't support comments
-
-<!--
 <details>
 <summary>August is nice</summary>
 <p>Soft puppy</p>
 </details>
--->
 
 > Quote
 

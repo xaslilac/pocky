@@ -2,15 +2,13 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
-use super::FromFilePath;
-
 pub struct MarkdownPage {
 	pub metadata: HashMap<String, String>,
 	pub content: String,
 }
 
 impl MarkdownPage {
-	pub fn from_content(content: String) -> Self {
+	pub fn parse(content: String) -> Self {
 		let is_frontmatter_delimiter =
 			|line: &&str| line.len() >= 3 && line.find(|c| c != '-').is_none();
 
@@ -39,17 +37,33 @@ impl MarkdownPage {
 			}
 		}
 
-		let content =
-			markdown::to_html(&lines.map(|line| format!("{}\n", line)).collect::<String>());
+		let options = {
+			use pulldown_cmark::Options;
+
+			let mut options = Options::empty();
+			options.insert(Options::ENABLE_STRIKETHROUGH);
+			options.insert(Options::ENABLE_TABLES);
+			options.insert(Options::ENABLE_TASKLISTS);
+
+			options
+		};
+
+		let md = lines.map(|line| format!("{}\n", line)).collect::<String>();
+		let parser = pulldown_cmark::Parser::new_ext(&md, options);
+		let mut content = String::new();
+		pulldown_cmark::html::push_html(&mut content, parser);
 
 		MarkdownPage { metadata, content }
 	}
 }
 
-impl FromFilePath for MarkdownPage {
-	fn from_file_path<P: AsRef<Path>>(path: P) -> Self {
+impl<P> From<P> for MarkdownPage
+where
+	P: AsRef<Path>,
+{
+	fn from(path: P) -> Self {
 		let content = fs::read_to_string(path).expect("unable to read file");
-		MarkdownPage::from_content(content)
+		MarkdownPage::parse(content)
 	}
 }
 
@@ -59,7 +73,7 @@ mod tests {
 
 	#[test]
 	fn no_frontmatter() {
-		let page = MarkdownPage::from_content("# Hello, friend!\n".to_string());
+		let page = MarkdownPage::parse("# Hello, friend!\n".to_string());
 
 		assert_eq!(page.metadata.len(), 0);
 		assert_eq!(
@@ -69,7 +83,7 @@ mod tests {
 	}
 	#[test]
 	fn with_frontmatter() {
-		let page = MarkdownPage::from_content(
+		let page = MarkdownPage::parse(
 			"
 ---
 title: Cool video games

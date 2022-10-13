@@ -1,5 +1,5 @@
 mod page;
 
-pub use page::FromFilePath;
-pub use page::MarkdownPage;
-pub use page::Page;
+pub use page::md::MarkdownPage;
+pub use page::AsHtml;
+pub use page::PageCollection;
