@@ -1,10 +1,11 @@
 pub mod html;
 pub mod md;
 
+use std::collections::btree_set;
+use std::collections::BTreeSet;
 use std::fs;
 use std::path::Path;
 use std::path::PathBuf;
-use std::vec;
 
 pub trait AsHtml {
 	fn as_html(&self) -> String;
@@ -12,14 +13,14 @@ pub trait AsHtml {
 
 #[derive(Clone, Debug, Default)]
 pub struct PageCollection<E: AsHtml> {
-	pages: Vec<E>,
+	pages: BTreeSet<E>,
 }
 
 impl<E> PageCollection<E>
 where
-	E: AsHtml,
+	E: AsHtml + Ord,
 {
-	pub fn into_vec(self) -> Vec<E> {
+	pub fn into_set(self) -> BTreeSet<E> {
 		self.pages
 	}
 
@@ -41,7 +42,7 @@ where
 	P: AsRef<Path>,
 {
 	fn from(path: P) -> Self {
-		let mut pages = fs::read_dir(path)
+		let pages = fs::read_dir(path)
 			.expect("could not read directory contents")
 			.flatten()
 			.filter(|entry| {
@@ -51,9 +52,7 @@ where
 					.unwrap_or(false)
 			})
 			.map(|entry| E::from(entry.path()))
-			.collect::<Vec<_>>();
-
-		pages.sort();
+			.collect::<BTreeSet<_>>();
 
 		Self { pages }
 	}
@@ -64,7 +63,7 @@ where
 	E: AsHtml,
 {
 	type Item = E;
-	type IntoIter = vec::IntoIter<Self::Item>;
+	type IntoIter = btree_set::IntoIter<E>;
 
 	fn into_iter(self) -> Self::IntoIter {
 		self.pages.into_iter()
