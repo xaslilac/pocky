@@ -1,6 +1,6 @@
 [package]
 name = "pocky"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["McKayla Washburn <mckayla@hey.com>"]
 description = "A framework for building your own static site generator"
 keywords = ["web", "markdown", "static", "site"]
