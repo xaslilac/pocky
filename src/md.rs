@@ -1,3 +1,5 @@
+use crate::shiki::Highlight;
+
 pub fn markdown_to_html<S>(md_source: S) -> String
 where
 	S: AsRef<str>,
@@ -18,7 +20,8 @@ where
 	// should prevent it from needing to resize multiple times.
 	let md_source = md_source.as_ref();
 	let mut result = String::with_capacity(md_source.len());
-	let parser = pulldown_cmark::Parser::new_ext(md_source, options);
+	let parser = pulldown_cmark::Parser::new_ext(md_source, options).highlight();
+
 	pulldown_cmark::html::push_html(&mut result, parser);
 	result
 }

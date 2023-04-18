@@ -1,6 +1,7 @@
 pub mod de;
 pub mod md;
 mod page;
+mod shiki;
 
 pub use page::html::HtmlPage;
 pub use page::md::MarkdownPage;
