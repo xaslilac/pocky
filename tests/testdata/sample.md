@@ -9,7 +9,8 @@ status: test
 # Header
 
 This is an example blog post, with a bunch of source code in different languages
-and usage of a bunch of Markdown features.
+and usage of a bunch of Markdown features. We're using the reference `MarkdownPage`
+implementation to generate HTML from it.
 
 <!-- here's a comment! hopefully you can't see it! -->
 
