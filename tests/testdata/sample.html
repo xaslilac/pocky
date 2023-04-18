@@ -1,0 +1,83 @@
+<h1>Header</h1>
+<p>This is an example blog post, with a bunch of source code in different languages
+and usage of a bunch of Markdown features. We're using the reference <code>MarkdownPage</code>
+implementation to generate HTML from it.</p>
+<!-- here's a comment! hopefully you can't see it! -->
+<details>
+<summary>August is nice</summary>
+<p>Soft puppy</p>
+</details>
+<p><del>I regret this text</del></p>
+<table><thead><tr><th>Name</th><th>Good</th><th>Soft</th></tr></thead><tbody>
+<tr><td>August</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Dot</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Mady</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Spot</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Toby</td><td>Yes</td><td>Yes</td></tr>
+</tbody></table>
+<blockquote>
+<p>Quote</p>
+</blockquote>
+<ul>
+<li>Bulleted list</li>
+<li>Bulleted list</li>
+</ul>
+<ol>
+<li>Numbered list</li>
+<li>Numbered list</li>
+</ol>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+Thing I have done</li>
+<li><input disabled="" type="checkbox"/>
+Thing I need to do</li>
+</ul>
+<pre><code class="language-rust">fn main() {
+	println!(&quot;hello, computer!&quot;);
+}
+</code></pre>
+<pre><code class="language-gleam">import gleam/io
+
+fn main() {
+	io.println(&quot;hello, computer!&quot;)
+}
+</code></pre>
+<pre><code class="language-zig">const std = @import(&quot;std&quot;);
+
+fn main() {
+	std.log.info(&quot;hello, computer!&quot;);
+}
+</code></pre>
+<pre><code class="language-swift">print(&quot;hello, computer!&quot;)
+</code></pre>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using std::cout;
+
+auto main() -&gt; int {
+	cout &lt;&lt; &quot;hello, computer!\n&quot;;
+}
+</code></pre>
+<pre><code class="language-go">import (
+	&quot;fmt&quot;
+)
+
+func main() {
+	fmt.Println(&quot;hello, computer!&quot;)
+}
+</code></pre>
+<pre><code class="language-haskell">main :: IO ()
+main = do
+  putstrln &quot;hello, computer!&quot;
+</code></pre>
+<pre><code class="language-elm">module App exposing (main)
+
+import Browser
+
+main : Program () Model Update
+main =
+    Browser.sandbox
+        { init = init
+        , update = update
+        , view = view
+        }
+</code></pre>
