@@ -1,5 +1,6 @@
 pub mod html;
 pub mod md;
+pub mod text;
 
 use std::collections::btree_set;
 use std::collections::BTreeSet;
