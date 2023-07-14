@@ -1,4 +1,8 @@
 use serde::de::DeserializeOwned;
+use std::fs;
+use std::path::Path;
+
+use crate::AsHtml;
 
 #[derive(Clone, Debug)]
 pub struct TextPage<M: DeserializeOwned> {
@@ -33,5 +37,25 @@ impl<M: DeserializeOwned> TextPage<M> {
 		let content = lines.map(|line| format!("{}\n", line)).collect::<String>();
 
 		TextPage { metadata, content }
+	}
+}
+
+impl<M, P> From<P> for TextPage<M>
+where
+	P: AsRef<Path>,
+	M: DeserializeOwned,
+{
+	fn from(path: P) -> Self {
+		let content = fs::read_to_string(path).expect("unable to read file");
+		TextPage::parse(content)
+	}
+}
+
+impl<M> AsHtml for TextPage<M>
+where
+	M: DeserializeOwned,
+{
+	fn as_html(&self) -> String {
+		self.content.clone()
 	}
 }
